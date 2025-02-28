@@ -10,6 +10,10 @@ import Category from "./pages/Admin/categories/Categories";
 import AddCategory from "./pages/Admin/categories/AddCategory";
 import EditCategory from "./pages/Admin/categories/EditCategory";
 
+import Components from "./pages/Admin/components/Components";
+import AddComponent from "./pages/Admin/components/AddComponent";
+import EditComponent from "./pages/Admin/components/EditComponent";
+
 const App = () => { 
   return ( 
     <BrowserRouter> 
@@ -24,7 +28,11 @@ const App = () => {
         <Route path="/admin/categories" element={<Category />} />
         <Route path="/admin/categories/add" element={<AddCategory />} />
         <Route path="/admin/categories/edit/:category" element={<EditCategory />} />
-        </Routes> 
+
+        <Route path="/admin/components" element={<Components />} />
+        <Route path="/admin/components/add" element={<AddComponent />} />
+        <Route path="/admin/components/edit/:component" element={<EditComponent />}/>
+        </Routes>
     </BrowserRouter> 
   ); 
 };
