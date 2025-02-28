@@ -4,6 +4,7 @@ import Home from "./pages/HomePage";
 
 import Brand from "./pages/Admin/brands/Brands";
 import AddBrand from "./pages/Admin/brands/AddBrand";
+import EditBrand from "./pages/Admin/brands/EditBrand";
 
 const App = () => { 
   return ( 
@@ -14,6 +15,7 @@ const App = () => {
 
         <Route path="/admin/brands" element={<Brand />} />
         <Route path="/admin/brands/add" element={<AddBrand />} />
+        <Route path="/admin/brands/edit/:brand" element={<EditBrand />} />
         </Routes> 
     </BrowserRouter> 
   ); 

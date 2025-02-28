@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Menu from "../../../components/Menu";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Brand = () => {
   const [brand, setBrand] = useState([]);
@@ -65,8 +66,17 @@ const Brand = () => {
                     }}
                   ></div>
                 </td>
+                <Link
+                  to={`/admin/brands/edit/${brand.id}`}
+                  className="btn btn-success me-2"
+                >
+                  Edit
+                </Link>
                 <td>
-                  <Button variant="danger" onClick={() => deleteBrand(brand.id)}>
+                  <Button
+                    variant="danger"
+                    onClick={() => deleteBrand(brand.id)}
+                  >
                     Supprimer
                   </Button>
                 </td>
