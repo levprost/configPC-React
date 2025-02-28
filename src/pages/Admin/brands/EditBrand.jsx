@@ -12,7 +12,6 @@ const EditBrand = () => {
   const { brand } = useParams(); // Получаем ID из URL
   const navigate = useNavigate();
 
-  // 🟢 Создаём state для всех данных
   const [nameBrand, setNameBrand] = useState("");
   const [logoBrand, setLogoBrand] = useState(null);
   const [descriptionBrand, setDescriptionBrand] = useState("");

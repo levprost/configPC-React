@@ -10,7 +10,7 @@ import Menu from "../../../components/Menu";
 const AddComponent = () => {
   const navigate = useNavigate();
 
-  // Стейты для формы
+  
   const [nameComponent, setNameComponent] = useState("");
   const [subtitleComponent, setSubtitleComponent] = useState("");
   const [priceComponent, setPriceComponent] = useState("");
@@ -25,11 +25,11 @@ const AddComponent = () => {
   const [categoryId, setCategoryId] = useState("");
   const [validationError, setValidationError] = useState({});
 
-  // Данные для селектов
+  
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // Загружаем бренды и категории при монтировании компонента
+  
   useEffect(() => {
     fetchBrands();
     fetchCategories();
@@ -53,12 +53,12 @@ const AddComponent = () => {
     }
   };
 
-  // Обработчик загрузки изображения
+  
   const changeHandler = (event) => {
     setImageComponent(event.target.files[0]);
   };
 
-  // Функция добавления компонента
+  
   const addComponent = async (e) => {
     e.preventDefault();
 
@@ -81,7 +81,7 @@ const AddComponent = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      navigate("/admin/components"); // Перенаправляем после успешного добавления
+      navigate("/admin/components"); 
     } catch ({ response }) {
       if (response?.status === 422) {
         setValidationError(response.data.errors);
@@ -100,7 +100,6 @@ const AddComponent = () => {
                 <h4 className="card-title">Ajouter un nouveau composant</h4>
                 <hr />
                 <Form onSubmit={addComponent}>
-                  {/* Показываем ошибки валидации */}
                   {Object.keys(validationError).length > 0 && (
                     <div className="alert alert-danger">
                       <ul className="mb-0">
