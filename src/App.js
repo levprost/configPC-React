@@ -16,6 +16,9 @@ import EditComponent from "./pages/Admin/components/EditComponent";
 
 import Contact from "./pages/Admin/contacts/Contacts";
 import ContactShow from "./pages/Admin/contacts/ContactShow";
+import AddContact from "./pages/Admin/contacts/AddContact";
+
+import Posts from "./pages/Admin/posts/Posts";
 
 const App = () => { 
   return ( 
@@ -38,6 +41,9 @@ const App = () => {
 
         <Route path="/admin/contacts" element={<Contact />} />
         <Route path="/admin/contacts/:contact" element={<ContactShow />} />
+        <Route path="/admin/contacts/add" element={<AddContact />} />
+
+        <Route path="/admin/posts" element={<Posts />} />
 
         </Routes>
     </BrowserRouter> 

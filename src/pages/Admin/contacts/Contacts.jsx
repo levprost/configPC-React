@@ -40,7 +40,9 @@ const ContactShow = () => {
           <tbody>
             {contact.map((contact) => (
               <tr key={contact.id}>
+                <td>{contact.subject_contact}</td>
                 <td>{contact.email_contact}</td>
+                <td>{contact.message_contact}</td>
                 <td>
                   <img
                     src={`http://127.0.0.1:8000/storage/uploads/${contact.image_contact}`}
