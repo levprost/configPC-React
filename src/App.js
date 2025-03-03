@@ -18,9 +18,13 @@ import Contact from "./pages/Admin/contacts/Contacts";
 import ContactShow from "./pages/Admin/contacts/ContactShow";
 import AddContact from "./pages/Admin/contacts/AddContact";
 
+import Register from "./pages/UI/User/Register";
+import Login from "./pages/UI/User/Login";
+
 import Posts from "./pages/Admin/posts/Posts";
 
 const App = () => { 
+  const token = localStorage.getItem("access_token");
   return ( 
     <BrowserRouter> 
         <Routes> 
@@ -44,6 +48,10 @@ const App = () => {
         <Route path="/admin/contacts/add" element={<AddContact />} />
 
         <Route path="/admin/posts" element={<Posts />} />
+
+
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
         </Routes>
     </BrowserRouter> 
