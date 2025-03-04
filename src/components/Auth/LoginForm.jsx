@@ -13,10 +13,10 @@ function LoginForm() {
 
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm({
-    defaultValues: { email_user: "", password: "" }
+    defaultValues: { email: "", password: "" }
   });
 
-  const email = watch("email_user", "");
+  const email = watch("email", "");
   const password = watch("password", "");
   let navigate = useNavigate();
 
@@ -27,7 +27,7 @@ function LoginForm() {
   let login = async () => {
     try {
       let formData = new FormData();
-      formData.append("email_user", email);
+      formData.append("email", email);
       formData.append("password", password);
 
       let res = await axios.post("http://127.0.0.1:8000/api/login", formData, {
@@ -50,7 +50,7 @@ function LoginForm() {
       <Form onSubmit={handleSubmit(login)} className="col-5">
         <Form.Group controlId="email">
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" {...register("email_user", { required: true })} />
+          <Form.Control type="email" {...register("email", { required: true })} />
           {errors.email && <p className="text-danger">Email requis</p>}
         </Form.Group>
 
