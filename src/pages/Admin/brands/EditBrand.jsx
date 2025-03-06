@@ -30,25 +30,24 @@ const EditBrand = () => {
       setDescriptionBrand(res.data.description_brand);
       setColorBrand(res.data.color_brand);
     } catch (error) {
-      console.log("Ошибка при загрузке бренда:", error);
+      console.log("Erreur lors du chargement de la marque:", error);
     }
   };
 
   const changeHandler = (event) => {
-    setLogoBrand(event.target.files[0]); // Устанавливаем новый файл
+    setLogoBrand(event.target.files[0]); 
   };
 
-  // 🔹 Функция обновления бренда
+
   const updateBrand = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("_method", "PATCH"); // Laravel требует этот метод для обновления
+    formData.append("_method", "PATCH"); 
     formData.append("name_brand", nameBrand);
     formData.append("description_brand", descriptionBrand);
     formData.append("color_brand", colorBrand);
 
-    // Если картинка не выбрана, не отправляем её
     if (logoBrand) {
       formData.append("logo_brand", logoBrand);
     }
@@ -58,7 +57,7 @@ const EditBrand = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      navigate("/admin/brands"); // Перенаправляем после успешного обновления
+      navigate("/admin/brands");  
     } catch ({ response }) {
       if (response?.status === 422) {
         console.error("Ошибка валидации:", response.data);

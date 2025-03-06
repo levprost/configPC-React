@@ -108,11 +108,11 @@ const AddMedia = () => {
     const formData = new FormData();
   
     mediaFiles.forEach(({ file, type }) => {
-      formData.append("media_file[]", file); // Добавляем файл
-      formData.append("media_type[]", String(type)); // Преобразуем type в строку (например, "image" или "video")
+      formData.append("media_file[]", file); 
+      formData.append("media_type[]", String(type)); 
     });
   
-    formData.append("post_id", postId); // Добавляем ID поста
+    formData.append("post_id", postId); 
   
     try {
       await axios.post("http://127.0.0.1:8000/api/media", formData, {
@@ -184,7 +184,7 @@ const AddMedia = () => {
                           <Button
                             variant="danger"
                             size="sm"
-                            onClick={() => removeFile(index)} // Удаление файла
+                            onClick={() => removeFile(index)} 
                           >
                             Supprimer
                           </Button>

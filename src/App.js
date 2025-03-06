@@ -23,6 +23,7 @@ import Login from "./pages/UI/User/Login";
 
 import Posts from "./pages/Admin/posts/Posts";
 import AddPost from "./pages/Admin/posts/AddPost";
+import EditPost from "./pages/Admin/posts/EditPosts";
 
 const App = () => { 
   const token = localStorage.getItem("access_token");
@@ -50,6 +51,7 @@ const App = () => {
 
         <Route path="/admin/posts" element={<Posts />} />
         <Route path="/admin/posts/add" element={<AddPost />} />
+        <Route path="/admin/posts/edit/:post" element={<EditPost />} />
 
 
         <Route path="/register" element={<Register />} />
