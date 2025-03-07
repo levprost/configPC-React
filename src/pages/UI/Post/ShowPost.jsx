@@ -1,12 +1,13 @@
-import { Card, Row, Col, Image, Container } from "react-bootstrap";
-import { FaUser, FaCalendarAlt } from "react-icons/fa";
+import { Card, Row, Col, Image, Container, ListGroup } from "react-bootstrap";
+import { FaUser, FaCalendarAlt, FaCommentDots } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ShowPost = () => {
-  const { post } = useParams(); // 🔹 Берем ID поста из URL (как "post")
+  const { post } = useParams(); // Берем ID поста из URL
   const [postData, setPostData] = useState(null);
+  const [comments, setComments] = useState([]); // Добавили состояние для комментариев
 
   useEffect(() => {
     displayPost();
@@ -16,6 +17,7 @@ const ShowPost = () => {
     try {
       const res = await axios.get(`http://127.0.0.1:8000/api/posts/${post}`);
       setPostData(res.data);
+      setComments(res.data.comments || []); // Загружаем комментарии
       console.log(res.data);
     } catch (error) {
       console.log("Erreur lors du chargement du post:", error);
@@ -73,6 +75,28 @@ const ShowPost = () => {
                 </Row>
               ) : (
                 <p className="text-muted">Aucun média disponible.</p>
+              )}
+            </Card.Body>
+
+            {/* Комментарии */}
+            <Card.Body>
+              <h4 className="mb-3">
+                <FaCommentDots /> Commentaires
+              </h4>
+              {comments.length > 0 ? (
+                <ListGroup variant="flush">
+                  {comments.map((comment, index) => (
+                    <ListGroup.Item key={index} className="border-0">
+                      <strong>{comment.user ? comment.user.nick_name : "Anonyme"}</strong>
+                      <p className="mb-1">{comment.content_comment}</p>
+                      <small className="text-muted">
+                        Posté le {new Date(comment.created_at).toLocaleDateString("fr-FR")}
+                      </small>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              ) : (
+                <p className="text-muted">Aucun commentaire pour le moment.</p>
               )}
             </Card.Body>
           </Card>
