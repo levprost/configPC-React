@@ -27,6 +27,8 @@ import EditPost from "./pages/Admin/posts/EditPosts";
 import ShowPost from "./pages/UI/Post/ShowPost"
 
 import ShowConfiguration from "./pages/UI/Configuration/ShowConfiguration"
+import AddConfiguration from "./pages/UI/Configuration/AddConfiguration"
+
 
 const App = () => { 
   const token = localStorage.getItem("access_token");
@@ -63,6 +65,7 @@ const App = () => {
         {/* ========================User Interface============================ */}
         <Route path="/ShowPost/:post" element={<ShowPost />} />
         <Route path="/ShowConfiguration/:configuration" element={<ShowConfiguration />} />
+        <Route path="/addconfiguration" element={<AddConfiguration />} />
         </Routes>
     </BrowserRouter> 
   ); 
