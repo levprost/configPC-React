@@ -52,7 +52,7 @@ const AddPost = () => {
   const addPost = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("access_token"); // Получаем токен из localStorage
+      const token = localStorage.getItem("access_token"); 
       if (!token) {
         console.error("Utilisateur non authentifié !");
         return;
@@ -73,7 +73,7 @@ const AddPost = () => {
         formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Передаем токен в заголовке
+            Authorization: `Bearer ${token}`, 
           },
         }
       );

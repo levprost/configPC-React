@@ -90,7 +90,7 @@ const EditPost = () => {
     const formData = new FormData();
     files.forEach((file) => {
       formData.append("media_file[]", file);
-      formData.append("media_type[]", "image"); // По умолчанию "image", можно адаптировать под видео
+      formData.append("media_type[]", "image"); 
     });
 
     formData.append("post_id", postId);
@@ -99,9 +99,9 @@ const EditPost = () => {
       await axios.post("http://127.0.0.1:8000/api/media", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      getPost(); // Обновляем список медиафайлов после загрузки
+      getPost(); 
     } catch (error) {
-      console.error("Ошибка при загрузке медиафайлов:", error);
+      console.error("Erreur hors de création de média:", error);
     }
   };
 
