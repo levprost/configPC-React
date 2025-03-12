@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import {
+  ListGroup,
+  Form,
+  Button,
+  InputGroup,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import axios from "axios";
 import Menu from "../../../components/Menu";
 
@@ -26,8 +30,15 @@ const AddConfiguration = () => {
   const [consumptionComponent, setConsumptionComponent] = useState("");
   const [imageComponent, setImageComponent] = useState(null);
   const [releaseComponent, setReleaseComponent] = useState(null);
+
+  //===========Search_System_of_components=========
   const [brandComponent, setBrandComponent] = useState(null);
   const [categoryComponent, setCategoryComponent] = useState(null);
+  const [selectedComponents, setSelectedComponents] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredComponents, setFilteredComponents] = useState([]);
+  const [chosenComponents, setChosenComponents] = useState([]);
 
   useEffect(() => {
     fetchUser();
@@ -39,22 +50,86 @@ const AddConfiguration = () => {
       getComponent();
     }
   }, [component]);
+  useEffect(() => {
+    if (searchTerm) {
+      searchComponents(searchTerm);
+    } else {
+      setFilteredComponents(components);
+      setShowResults(false);
+    }
+  }, [searchTerm, components]);
 
+  //Upload all components from API
   const fetchComponents = async () => {
     try {
       const res = await axios.get("http://127.0.0.1:8000/api/components");
       console.log("Réponse de l'API:", res.data);
       if (Array.isArray(res.data.components)) {
-        setComponents(res.data.components); // ✅ Устанавливаем массив компонентов
+        setComponents(res.data.components); //we put data in variable components
+        setFilteredComponents(res.data.components);
       } else {
         console.error("Les données reçues ne sont pas un tableau:", res.data);
-        setComponents([]); // Предотвращает ошибку
+        setComponents([]);
       }
     } catch (error) {
       console.error("Erreur lors du chargement des composants:", error);
     }
   };
-  
+
+  //Search system from api with key term
+  const searchComponents = async (term) => {
+    try {
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/components?term=${term}`
+      );
+      if (Array.isArray(res.data.componentSearch)) {
+        setFilteredComponents(res.data.componentSearch);
+        setShowResults(true);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la recherche des composants:", error);
+    }
+  };
+
+  //Upload currentuser with bearer Token
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        console.error("Utilisateur non authentifié !");
+        return;
+      }
+
+      const res = await axios.get("http://127.0.0.1:8000/api/currentuser", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(res.data)
+      setUserId(res.data.data.user.id);
+    } catch (error) {
+      console.error("Erreur lors de la récupération de l'utilisateur:", error);
+    }
+  };
+
+  // Function to handle component selection
+  const handleChooseComponent = (comp) => {
+    if (!comp || !comp.id) {
+      console.error("Component not found");
+      console.log(comp);
+      return; 
+    }
+
+
+    if (selectedComponents.some((component) => component.id === comp.id)) {
+      return; 
+    }
+
+    setSelectedComponents([...selectedComponents, comp]);
+  };
+
+  // Function to remove a selected component
+  const removeChosenComponent = (id) => {
+    setChosenComponents(chosenComponents.filter((c) => c.id !== id)); // Filter out the removed component
+  };
   const getComponent = async () => {
     try {
       const res = await axios.get(
@@ -73,53 +148,43 @@ const AddConfiguration = () => {
     }
   };
 
-  const fetchUser = async () => {
-    try {
-      const token = localStorage.getItem("access_token");
-      if (!token) {
-        console.error("Utilisateur non authentifié !");
-        return;
-      }
-
-      const res = await axios.get("http://127.0.0.1:8000/api/currentuser", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setUserId(res.data.data.user.id);
-    } catch (error) {
-      console.error("Erreur lors de la récupération de l'utilisateur:", error);
-    }
-  };
-
   const addConfiguration = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
     try {
-      const token = localStorage.getItem("access_token");
+      const token = localStorage.getItem("access_token"); // Get token from local storage
       if (!token) {
-        console.error("Utilisateur non authentifié !");
+        console.error("User is not authenticated!"); // Handle unauthenticated user
         return;
       }
 
-      const formData = new FormData();
+      const formData = new FormData(); // Prepare the form data to be sent
       formData.append("name_config", nameConfig);
       formData.append("title_config", titleConfig);
       formData.append("subtitle_config", subtitleConfig);
       formData.append("description_config", descriptionConfig);
       formData.append("explication_config", explicationConfig);
       formData.append("user_id", userId);
-      if (imageConfig) formData.append("image_config", imageConfig);
-      if (benchmarkConfig) formData.append("benchmark_config", benchmarkConfig);
 
+      if (imageConfig) formData.append("image_config", imageConfig); // Attach image if provided
+      if (benchmarkConfig) formData.append("benchmark_config", benchmarkConfig); // Attach benchmark if provided
+
+      chosenComponents.forEach((comp) => {
+        formData.append("components[]", comp.id);
+      });
+
+      // Send the configuration data via POST request
       await axios.post("http://127.0.0.1:8000/api/configurations", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Configuration ajoutée avec succès !");
+      console.log("Configuration added successfully!"); // Success message
     } catch (error) {
+      // Handle validation or other errors
       if (error.response && error.response.status === 422) {
         setValidationError(error.response.data.errors);
+        console.error("Validation error:", error.response.data.errors);
       } else {
-        console.error("Erreur lors de l'ajout de la configuration", error);
+        console.error("Error adding configuration", error);
       }
     }
   };
@@ -211,20 +276,79 @@ const AddConfiguration = () => {
                       onChange={(e) => setBenchmarkConfig(e.target.files[0])}
                     />
                   </Form.Group>
-                  <Form.Label>Choisir un composant</Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={component}
-                    onChange={(e) => setComponent(e.target.value)}
-                  >
-                    <option value="">Sélectionner un composant</option>
-                    {components.map((comp) => (
-                      <option key={comp.id} value={comp.id}>
-                        {comp.name_component} - {comp.price_component}€
-                      </option>
-                    ))}
-                  </Form.Control>
+                  <div className="search-component-container">
 
+                    <Form.Group controlId="searchComponent">
+                      <Form.Label>Rechercher un composant</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type="text"
+                          placeholder="Entrez le nom du composant..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          onFocus={() => setShowResults(true)}
+                          onBlur={() =>
+                            setTimeout(() => setShowResults(false), 200)
+                          } 
+                        />
+                      </InputGroup>
+                    </Form.Group>
+
+                    {showResults && filteredComponents.length > 0 && (
+                      <ListGroup className="position-absolute w-100 mt-1 shadow-sm rounded">
+                        {filteredComponents.map((comp) => (
+                          <ListGroup.Item
+                            key={comp.id}
+                            action
+                            onClick={() => handleChooseComponent(comp)} 
+                            className="result-item"
+                          >
+                            <div className="d-flex justify-content-between">
+                              <span>{comp.name_component}</span>
+                              <span>{comp.price_component}€</span>
+                            </div>
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    )}
+
+                    {/* Выбранные компоненты */}
+                    {selectedComponents.length > 0 && (
+                      <div className="mt-3">
+                        <h5>Composants sélectionnés :</h5>
+                        <ListGroup className="selected-components-list">
+                          {selectedComponents.map((comp) => (
+                            <ListGroup.Item
+                              key={comp.id}
+                              className="d-flex justify-content-between align-items-center"
+                            >
+                              <span>
+                                {comp.name_component} - {comp.price_component}€
+                              </span>
+                              <OverlayTrigger
+                                placement="top"
+                                overlay={
+                                  <Tooltip id={`tooltip-remove-${comp.id}`}>
+                                    Supprimer
+                                  </Tooltip>
+                                }
+                              >
+                                <Button
+                                  variant="danger"
+                                  size="sm"
+                                  onClick={() => removeChosenComponent(comp.id)}
+                                  className="remove-btn"
+                                >
+                                  <i className="fas fa-times"></i>{" "}
+                                  {/* Иконка для удаления */}
+                                </Button>
+                              </OverlayTrigger>
+                            </ListGroup.Item>
+                          ))}
+                        </ListGroup>
+                      </div>
+                    )}
+                  </div>
                   <Button
                     variant="primary"
                     className="mt-3 w-100"
