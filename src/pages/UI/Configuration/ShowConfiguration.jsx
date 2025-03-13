@@ -8,7 +8,8 @@ import {
   Form,
   Button,
 } from "react-bootstrap";
-import { FaUser, FaCalendarAlt, FaCommentDots, FaStar } from "react-icons/fa";
+import { FaUser, FaCalendarAlt,  FaDollarSign, FaStar } from "react-icons/fa";
+import { GiElectric } from "react-icons/gi";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -23,6 +24,10 @@ const ShowConfiguration = () => {
   const [ratingFavorite, setRatingFavorite] = useState(3);
   const [validationError, setValidationError] = useState({});
 
+  //===========COMPONENTS============
+  const [components, setComponents] = useState("");
+
+
   useEffect(() => {
     displayConfig();
     fetchUser();
@@ -32,15 +37,17 @@ const ShowConfiguration = () => {
     try {
       const token = localStorage.getItem("access_token");
       if (!token) {
-        console.error("Pas de token!");
+        console.error("Utilisateur non authentifié !");
         return;
       }
+
       const res = await axios.get("http://127.0.0.1:8000/api/currentuser", {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(res.data);
       setUserComment(res.data.data.user.id);
     } catch (error) {
-      console.error("Erreur de récupération de l'utilisateur:", error);
+      console.error("Erreur lors de la récupération de l'utilisateur:", error);
     }
   };
 
@@ -52,6 +59,8 @@ const ShowConfiguration = () => {
       setConfigData(res.data.configuration);
       setRatings(res.data.ratings);
       setScore(res.data.score);
+      setComponents(res.data.configuration.components);
+      console.log(res.data.configuration.components);
     } catch (error) {
       console.log("Erreur lors du chargement de la configuration:", error);
     }
@@ -97,6 +106,24 @@ const ShowConfiguration = () => {
     );
   }
 
+  //for calculate price of configuration
+  
+  const calculateTotalPrice = () => {
+    if (!components || components.length === 0) return 0;
+    return components
+      .reduce((total, comp) => total + parseFloat(comp.price_component), 0)
+      .toFixed(2);
+  };
+
+  //for calculate consumption of configuration
+  const calculateTotalConsumption = () => {
+    if (!components || components.length === 0) return 0;
+    return components.reduce(
+      (total, comp) => total + parseInt(comp.consumption_component),
+      0
+    );
+  };
+
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
@@ -118,20 +145,49 @@ const ShowConfiguration = () => {
                 </span>
               </div>
             </Card.Body>
-
+            <Card.Body>
+              <div className="d-flex justify-content-between text-muted">
+                <span>
+                  <GiElectric /> Consommation de toute la configuration:{" "}
+                  {calculateTotalConsumption()} W
+                </span>
+                <span>
+                  <FaDollarSign /> Prix de toute la configuration:{" "}
+                  {calculateTotalPrice()} €
+                </span>
+              </div>
+            </Card.Body>
             <Card.Body>
               <p>{configData.explication_config}</p>
               <blockquote className="blockquote text-muted">
                 {configData.description_config}
               </blockquote>
             </Card.Body>
-
+            <Card.Body>
+              {components && components.length > 0 ? (
+                components.map((comp, index) => (
+                  <div key={index} className="component-card">
+                    <h5>{comp.name_component}</h5>
+                    <p>Prix: {comp.price_component} €</p>
+                    <p>Consommation: {comp.consumption_component} W</p>
+                    {comp.image_component && (
+                      <img
+                        src={comp.image_component}
+                        alt={comp.name_component}
+                      />
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>Pas de composants pour cette configuration</p>
+              )}
+            </Card.Body>
             <Card.Body>
               <h4 className="mb-3">Images</h4>
               <Row>
                 <Col md={6}>
                   <Image
-                    src={configData.image_config}
+                    src={`http://127.0.0.1:8000/storage/uploads/${configData.image_config}`}
                     alt="Configuration"
                     thumbnail
                     className="shadow-sm rounded w-100"
@@ -139,7 +195,7 @@ const ShowConfiguration = () => {
                 </Col>
                 <Col md={6}>
                   <Image
-                    src={configData.benchmark_config}
+                    src={`http://127.0.0.1:8000/storage/uploads/${configData.benchmark_config}`}
                     alt="Benchmark"
                     thumbnail
                     className="shadow-sm rounded w-100"

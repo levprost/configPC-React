@@ -28,6 +28,7 @@ import ShowPost from "./pages/UI/Post/ShowPost"
 
 import ShowConfiguration from "./pages/UI/Configuration/ShowConfiguration"
 import AddConfiguration from "./pages/UI/Configuration/AddConfiguration"
+import CalculateConfiguration from "./pages/UI/Configuration/CalculateConfiguration";
 
 
 const App = () => { 
@@ -66,6 +67,7 @@ const App = () => {
         <Route path="/ShowPost/:post" element={<ShowPost />} />
         <Route path="/ShowConfiguration/:configuration" element={<ShowConfiguration />} />
         <Route path="/addconfiguration" element={<AddConfiguration />} />
+        <Route path="/calculconfiguration" element={<CalculateConfiguration />} />
         </Routes>
     </BrowserRouter> 
   ); 

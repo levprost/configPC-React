@@ -168,7 +168,7 @@ const AddConfiguration = () => {
       if (imageConfig) formData.append("image_config", imageConfig); // Attach image if provided
       if (benchmarkConfig) formData.append("benchmark_config", benchmarkConfig); // Attach benchmark if provided
 
-      chosenComponents.forEach((comp) => {
+      selectedComponents.forEach((comp) => {
         formData.append("components[]", comp.id);
       });
 
