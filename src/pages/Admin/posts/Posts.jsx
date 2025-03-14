@@ -6,22 +6,33 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Posts = () => {
-  const [post, setPost] = useState([]);
-
-
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     displayPosts();
-  }, []);
+  }, [currentPage]);
 
   const displayPosts = async () => {
-      await axios.get("http://127.0.0.1:8000/api/posts").then((res) => {
-          setPost(res.data);
-    });
+    await axios.get(`http://127.0.0.1:8000/api/posts?page=${currentPage}`)
+      .then((res) => {
+        console.log(res.data);  
+        setPosts(res.data.data); 
+        setCurrentPage(res.data.current_page);
+        setTotalPages(res.data.last_page);
+      });
   };
+  
 
   const deletePost = (id) => {
     axios.delete(`http://127.0.0.1:8000/api/posts/${id}`).then(displayPosts);
+    displayPosts();
+  };
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page); 
+    }
   };
 
   return (
@@ -41,7 +52,7 @@ const Posts = () => {
             </tr>
           </thead>
           <tbody>
-            {post.map((post) => (
+            {posts && posts.map((post) => (
               <tr key={post.id}>
                 <td>{post.title_post}</td>
                 <td>{post.subtitle_post}</td>
@@ -50,7 +61,7 @@ const Posts = () => {
                 <td>{post.content_post_3}</td>
                 <td>{post.description_post}</td>
                 <td>{post.user_id}</td>
-                
+
                 <Link
                   to={`/admin/posts/edit/${post.id}`}
                   className="btn btn-success me-2"
@@ -58,10 +69,7 @@ const Posts = () => {
                   Edit
                 </Link>
                 <td>
-                  <Button
-                    variant="danger"
-                    onClick={() => deletePost(post.id)}
-                  >
+                  <Button variant="danger" onClick={() => deletePost(post.id)}>
                     Supprimer
                   </Button>
                 </td>
@@ -69,6 +77,23 @@ const Posts = () => {
             ))}
           </tbody>
         </Table>
+        <div className="pagination">
+          <Button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </Button>
+
+          <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+          <Button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );

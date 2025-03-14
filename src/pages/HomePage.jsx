@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Menu'; 
+import './../styles/css/navbar.css'
  
 const Home = () => { 
     return ( 

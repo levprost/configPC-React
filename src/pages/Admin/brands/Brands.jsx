@@ -6,28 +6,37 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Brand = () => {
-  const [brand, setBrand] = useState([]);
-  const [component, setComponents] = useState([]);
+  const [brands, setBrands] = useState([]);  // Изменил на plural "brands"
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    displayBrand();
-    fetchComponents();
-  }, []);
+    displayBrands();  // Загружаем бренды при монтировании компонента
+  }, [currentPage]);  // Зависимость от currentPage
 
-  const displayBrand = async () => {
-    await axios.get("http://127.0.0.1:8000/api/brands").then((res) => {
-      setBrand(res.data);
-    });
+  // Функция для загрузки брендов с пагинацией
+  const displayBrands = async () => {
+    await axios
+      .get(`http://127.0.0.1:8000/api/brands?page=${currentPage}`)
+      .then((res) => {
+        setBrands(res.data.data);  // Данные брендов
+        setCurrentPage(res.data.current_page);  // Текущая страница
+        setTotalPages(res.data.last_page);  // Общее количество страниц
+      });
   };
 
-  const fetchComponents = async () => {
-    await axios.get("http://127.0.0.1:8000/api/components").then((res) => {
-      setComponents(res.data);
-    });
-  };
-
+  // Удаление бренда
   const deleteBrand = (id) => {
-    axios.delete(`http://127.0.0.1:8000/api/brands/${id}`).then(displayBrand);
+    axios.delete(`http://127.0.0.1:8000/api/brands/${id}`).then(() => {
+      displayBrands();  // Перезагружаем данные после удаления
+    });
+  };
+
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page); 
+    }
   };
 
   return (
@@ -45,7 +54,7 @@ const Brand = () => {
             </tr>
           </thead>
           <tbody>
-            {brand.map((brand) => (
+            {brands.map((brand) => (
               <tr key={brand.id}>
                 <td>{brand.name_brand}</td>
                 <td>
@@ -84,6 +93,24 @@ const Brand = () => {
             ))}
           </tbody>
         </Table>
+
+        <div className="pagination">
+          <Button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </Button>
+
+          <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+          <Button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );

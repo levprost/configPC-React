@@ -7,19 +7,32 @@ import { Link } from "react-router-dom";
 
 const ContactShow = () => {
   const [contact, setContact] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    displayContact();
-  }, []);
 
-  const displayContact = async () => {
-    await axios.get("http://127.0.0.1:8000/api/contacts").then((res) => {
-      setContact(res.data);
-    });
+  const displayContact = async (page = 1) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/contacts?page=${page}`);
+      setContact(response.data.data); 
+      setCurrentPage(response.data.current_page); 
+      setTotalPages(response.data.last_page); 
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
+  useEffect(() => {
+    displayContact(currentPage);
+  }, [currentPage]);
 
   const deleteContact = (id) => {
     axios.delete(`http://127.0.0.1:8000/api/contacts/${id}`).then(displayContact);
+    displayContact(currentPage);
+  };
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
   return (
@@ -69,6 +82,23 @@ const ContactShow = () => {
             ))}
           </tbody>
         </Table>
+        <div className="pagination">
+          <Button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </Button>
+
+          <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+          <Button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </Button>
+          </div>
       </div>
     </div>
   );
