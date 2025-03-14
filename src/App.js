@@ -30,6 +30,7 @@ import ShowConfiguration from "./pages/UI/Configuration/ShowConfiguration"
 import AddConfiguration from "./pages/UI/Configuration/AddConfiguration"
 import CalculateConfiguration from "./pages/UI/Configuration/CalculateConfiguration";
 
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 
 const App = () => { 
   const token = localStorage.getItem("access_token");
@@ -38,6 +39,8 @@ const App = () => {
         <Routes> 
         <Route path="/" element={<Home />} /> 
         <Route path="*" element={<Home />} /> 
+
+        {/* ========================Admin Panel============================ */}
 
         <Route path="/admin/brands" element={<Brand />} />
         <Route path="/admin/brands/add" element={<AddBrand />} />
@@ -59,11 +62,11 @@ const App = () => {
         <Route path="/admin/posts/add" element={<AddPost />} />
         <Route path="/admin/posts/edit/:post" element={<EditPost />} />
 
-
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path= "/admin/dashboard" element={<AdminDashboard/>}></Route>
 
         {/* ========================User Interface============================ */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/ShowPost/:post" element={<ShowPost />} />
         <Route path="/ShowConfiguration/:configuration" element={<ShowConfiguration />} />
         <Route path="/addconfiguration" element={<AddConfiguration />} />

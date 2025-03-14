@@ -7,6 +7,7 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
+import { FaTrash } from "react-icons/fa";
 import axios from "axios";
 import Menu from "../../../components/Menu";
 
@@ -128,7 +129,7 @@ const AddConfiguration = () => {
 
   // Function to remove a selected component
   const removeChosenComponent = (id) => {
-    setChosenComponents(chosenComponents.filter((c) => c.id !== id)); // Filter out the removed component
+    setSelectedComponents(selectedComponents.filter((c) => c.id !== id)); // Теперь обновляем selectedComponents
   };
   const getComponent = async () => {
     try {
@@ -339,8 +340,7 @@ const AddConfiguration = () => {
                                   onClick={() => removeChosenComponent(comp.id)}
                                   className="remove-btn"
                                 >
-                                  <i className="fas fa-times"></i>{" "}
-                                  {/* Иконка для удаления */}
+                                  <FaTrash/>{" "}
                                 </Button>
                               </OverlayTrigger>
                             </ListGroup.Item>
