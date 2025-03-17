@@ -25,6 +25,7 @@ import Posts from "./pages/Admin/posts/Posts";
 import AddPost from "./pages/Admin/posts/AddPost";
 import EditPost from "./pages/Admin/posts/EditPosts";
 import ShowPost from "./pages/UI/Post/ShowPost"
+import PostsList from "./pages/UI/Post/Posts"
 
 import ShowConfiguration from "./pages/UI/Configuration/ShowConfiguration"
 import AddConfiguration from "./pages/UI/Configuration/AddConfiguration"
@@ -71,6 +72,7 @@ const App = () => {
         <Route path="/ShowConfiguration/:configuration" element={<ShowConfiguration />} />
         <Route path="/addconfiguration" element={<AddConfiguration />} />
         <Route path="/calculconfiguration" element={<CalculateConfiguration />} />
+        <Route path="/posts" element={<PostsList />}/>
         </Routes>
     </BrowserRouter> 
   ); 

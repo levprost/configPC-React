@@ -12,6 +12,7 @@ import { FaUser, FaCalendarAlt, FaCommentDots } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
 import { CgPacman } from "react-icons/cg";
 
 const ShowPost = () => {
@@ -114,7 +115,6 @@ const ShowPost = () => {
       <Row className="justify-content-center">
         <Col lg={8}>
           <Card className="shadow-lg p-4">
-            {/* Заголовок и дата */}
             <Card.Body>
               <h2 className="text-center">{postData.title_post}</h2>
               <h5 className="text-center text-muted">
@@ -133,7 +133,6 @@ const ShowPost = () => {
               </div>
             </Card.Body>
 
-            {/* Контент статьи */}
             <Card.Body>
               <p>{postData.content_post}</p>
               {postData.content_post_1 && <p>{postData.content_post_1}</p>}
@@ -143,7 +142,6 @@ const ShowPost = () => {
               </blockquote>
             </Card.Body>
 
-            {/* Медиафайлы */}
             <Card.Body>
               <h4 className="mb-3">Médias</h4>
               {postData.media && postData.media.length > 0 ? (

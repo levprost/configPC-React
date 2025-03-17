@@ -29,7 +29,6 @@ const Navbar = () => {
 
       console.log("La reponse de serveur:", res.data);
       
-      // Сохраняем весь объект пользователя, а не только id
       setUser(res.data.data.user); 
       
     } catch (error) {
@@ -71,14 +70,14 @@ const Navbar = () => {
                 <NavLink className="nav-link bg-white" aria-current="page" to="/addconfiguration">Configurations</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link customLink" to="/link">Link</NavLink>
+                <NavLink className="nav-link customLink" to="/posts">Actualités</NavLink>
               </li>
               <li className="nav-item dropdown">
                 <li className="nav-link dropdown-toggle light customLink" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Dropdown
                 </li>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><NavLink className="dropdown-item customLink" to="#">Action</NavLink></li>
+                  <li><NavLink className="dropdown-item customLink" to="#"></NavLink></li>
                   <li><NavLink className="dropdown-item customLink" to="#">Another action</NavLink></li>
                   <li><hr className="dropdown-divider" /></li>
                   <li><NavLink className="dropdown-item customLink" to="#">Something else here</NavLink></li>
