@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { AiOutlineLink } from "react-icons/ai";
 import "../../../styles/css/postsList.css";
+import "../../../styles/css/main.css";
 import bgCard from './../../../public/graph.jpg';
 import Menu from "./../../../components/Menu";
 
@@ -37,14 +37,14 @@ const PostsList = () => {
 
   return (
     <>
+    <div className="main">
     <Menu/>
-    <div>
       <div className="container mx-auto mt-4">
-        <div className="row">
+        <div className="row d-flex justify-content-center">
           {posts &&
             posts.map((post) => (
               <div key={post.id} className="col-md-4 mb-4">
-                <div className="card" style={{ width: "18rem" }}>
+                <div className="card me-auto">
                   {post.media &&
                   Array.isArray(post.media) &&
                   post.media.length > 0 ? (
@@ -57,21 +57,21 @@ const PostsList = () => {
                     <img
                       src={bgCard}
                       className="card-img-top"
-                      alt="Заглушка"
+                      alt=""
                     />
                   )}
                   <div className="card-body">
                     <h5 className="card-title">{post.title_post}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">
+                    <h6 className="card-subtitle mb-2 border-bottom">
                       {post.subtitle_post}
                     </h6>
                     <p className="card-text">{post.description_post}</p>
-                    <a
+                    <Button
                       href={`/showpost/${post.id}`}
-                      className="btn btn-primary mr-2"
+                      className="btnList"
                     >
-                      <i className="fas fa-link"></i> Voir l'article
-                    </a>
+                       <AiOutlineLink className="icon" />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -81,6 +81,7 @@ const PostsList = () => {
 
       <div className="pagination d-flex justify-content-center mt-4">
         <Button
+          className="btnPage"
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
@@ -90,6 +91,7 @@ const PostsList = () => {
           Page {currentPage} of {totalPages}
         </span>
         <Button
+          className="btnPage"
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
