@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { AiOutlineLink } from "react-icons/ai";
 import "../../../styles/css/postsList.css";
 import "../../../styles/css/main.css";
 import bgCard from './../../../public/graph.jpg';
 import Menu from "./../../../components/Menu";
+import { FaEye } from "react-icons/fa";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
@@ -70,7 +70,7 @@ const PostsList = () => {
                       href={`/showpost/${post.id}`}
                       className="btnList"
                     >
-                       <AiOutlineLink className="icon" />
+                       <FaEye className="icon"/>Voir les détails
                     </Button>
                   </div>
                 </div>

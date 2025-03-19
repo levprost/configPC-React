@@ -36,7 +36,7 @@ function LoginForm() {
 
       if (res.status === 200) {
         localStorage.setItem("access_token", res.data.data.access_token.token);
-        toast.success("Connexion réussie ! 🚀", { position: "top-right" });
+        toast.success("Connexion réussie !", { position: "top-right" });
         setTimeout(() => navigate("/", { replace: true }), 2000);
       }
     } catch (err) {
