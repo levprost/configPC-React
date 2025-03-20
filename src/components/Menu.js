@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import "./../styles/css/navbar.css";
 import axios from "axios";
 import LogoutButton from "./Auth/LogoutButton";
-import "./../styles/css/button.css"
+import ButtonNav from "./constructs/ButtonNav";
+import "./../styles/css/navbar.css";
+import "./../styles/css/button.css";
+import "./../styles/css/buttonNav.css";
+import { IoMdExit } from "react-icons/io";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -29,11 +32,10 @@ const Navbar = () => {
       });
 
       console.log("La reponse de serveur:", res.data);
-
       setUser(res.data.data.user);
     } catch (error) {
       console.error(
-        "Erreur hors de la récupertaion de User",
+        "Erreur lors de la récupération de User",
         error.response || error
       );
     }
@@ -51,13 +53,14 @@ const Navbar = () => {
         }
       );
     } catch (error) {
-      console.error("Erreur hors de deconnexion:", error);
+      console.error("Erreur lors de la déconnexion:", error);
     }
 
     localStorage.removeItem("access_token");
     setUser(null);
     navigate("/");
   };
+
   return (
     <div className="navigation">
       <nav className="navbar navbar-expand-lg customColor">
@@ -79,51 +82,18 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink
-                  className="nav-link bg-white"
-                  aria-current="page"
-                  to="/addconfiguration"
-                >
-                  Configurations
-                </NavLink>
+                <ButtonNav
+                  text="Configurations"
+                  variant="hsl(0, 0.00%, 100.00%)"
+                  glow={true}
+                />
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link customLink" to="/posts">
-                  Actualités
-                </NavLink>
-              </li>
-              <li className="nav-item dropdown">
-                <li
-                  className="nav-link dropdown-toggle light customLink"
-                  to="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown
-                </li>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <NavLink
-                      className="dropdown-item customLink"
-                      to="#"
-                    ></NavLink>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item customLink" to="#">
-                      Another action
-                    </NavLink>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item customLink" to="#">
-                      Something else here
-                    </NavLink>
-                  </li>
-                </ul>
+                <ButtonNav
+                  text="Actualités"
+                  variant="hsl(60, 100%, 50%)"
+                  glow={false}
+                />
               </li>
               {user ? (
                 <>
@@ -132,30 +102,30 @@ const Navbar = () => {
                       {user.nick_name}
                     </span>
                   </li>
-                  <li className="">
-                    <LogoutButton>
-                    </LogoutButton>
+                  <li className="nav-item">
+                    <LogoutButton></LogoutButton>
                   </li>
                 </>
               ) : (
                 <>
                   <li className="nav-item">
-                    <NavLink className="nav-link bg-white" to="/login">
-                      Se connecter
-                    </NavLink>
+                    <a href="/login">
+                    <ButtonNav
+                      text="Se connecter"
+                      variant="hsl(120, 100%, 50%)"
+                      glow={true}
+                    />
+                    </a>
                   </li>
                   <li className="nav-item">
-                    <NavLink className="nav-link bg-white" to="/register">
-                      S'inscrire
-                    </NavLink>
+                    <ButtonNav
+                      text="S'inscrire"
+                      variant="hsl(0, 0.00%, 100.00%)"
+                      glow={false}
+                    />
                   </li>
                 </>
               )}
-              <li className="nav-item">
-                <span className="nav-link customLink" aria-disabled="true">
-                  Disabled
-                </span>
-              </li>
             </ul>
           </div>
         </div>
