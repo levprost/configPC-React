@@ -3,9 +3,9 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import "../../../styles/css/postsList.css";
 import "../../../styles/css/main.css";
-import bgCard from './../../../public/graph.jpg';
+import bgCard from "./../../../public/graph.jpg";
 import Menu from "./../../../components/Menu";
-import { FaEye } from "react-icons/fa";
+import { FaEye,FaUserAlt } from "react-icons/fa";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
@@ -37,69 +37,67 @@ const PostsList = () => {
 
   return (
     <>
-    <div className="main">
-    <Menu/>
-      <div className="container mx-auto mt-4">
-        <div className="row d-flex justify-content-center">
-          {posts &&
-            posts.map((post) => (
-              <div key={post.id} className="col-md-4 mb-4">
-                <div className="card me-auto">
-                  {post.media &&
-                  Array.isArray(post.media) &&
-                  post.media.length > 0 ? (
-                    <img
-                      src={`http://127.0.0.1:8000/storage/uploads/${post.media[0].media_file}`}
-                      className="card-img-top"
-                      alt={post.title_post}
-                    />
-                  ) : (
-                    <img
-                      src={bgCard}
-                      className="card-img-top"
-                      alt=""
-                    />
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title">{post.title_post}</h5>
-                    <h6 className="card-subtitle mb-2 border-bottom">
-                      {post.subtitle_post}
-                    </h6>
-                    <p className="card-text">{post.description_post}</p>
-                    <Button
-                      href={`/showpost/${post.id}`}
-                      className="btnList"
-                    >
-                       <FaEye className="icon"/>Voir les détails
-                    </Button>
+      <div className="main">
+        <Menu />
+        <div className="container mx-auto mt-4">
+          <div className="row d-flex justify-content-center">
+            {posts &&
+              posts.map((post) => (
+                <div key={post.id} className="col-md-4 mb-4">
+                  <div className="card card-list me-auto d-flex flex-column">
+                    {post.media &&
+                    Array.isArray(post.media) &&
+                    post.media.length > 0 ? (
+                      <img
+                        src={`http://127.0.0.1:8000/storage/uploads/${post.media[0].media_file}`}
+                        className="card-img-top"
+                        alt={post.title_post}
+                      />
+                    ) : (
+                      <img src={bgCard} className="card-img-top" alt="" />
+                    )}
+                    <div className="card-body card-body-list flex-grow-1">
+                      <h4 className="card-title">{post.title_post}</h4>
+                      <h5 className="card-subtitle mb-2 border-bottom">
+                      <FaUserAlt className="icon-list" />
+                      {post.user.nick_name}
+                      </h5>
+                      <p className="card-text">{post.description_post}</p>
+                    </div>
+                    <div className="card-footer card-footer-list">
+                      <Button
+                        href={`/showpost/${post.id}`}
+                        className="btnList w-100"
+                      >
+                        <FaEye className="icon mb-1" /> Voir les détails
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
+        </div>
+
+        <div className="pagination d-flex justify-content-center mt-4">
+          <Button
+            className="btnPage"
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </Button>
+          <span className="mx-3">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            className="btnPage"
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </Button>
         </div>
       </div>
-
-      <div className="pagination d-flex justify-content-center mt-4">
-        <Button
-          className="btnPage"
-          disabled={currentPage === 1}
-          onClick={() => handlePageChange(currentPage - 1)}
-        >
-          Previous
-        </Button>
-        <span className="mx-3">
-          Page {currentPage} of {totalPages}
-        </span>
-        <Button
-          className="btnPage"
-          disabled={currentPage === totalPages}
-          onClick={() => handlePageChange(currentPage + 1)}
-        >
-          Next
-        </Button>
-      </div>
-    </div>
-
     </>
   );
 };
