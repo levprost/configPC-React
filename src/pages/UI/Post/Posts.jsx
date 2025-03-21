@@ -5,7 +5,7 @@ import "../../../styles/css/postsList.css";
 import "../../../styles/css/main.css";
 import bgCard from "./../../../public/graph.jpg";
 import Menu from "./../../../components/Menu";
-import { FaEye,FaUserAlt } from "react-icons/fa";
+import { FaEye, FaUserAlt } from "react-icons/fa";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
@@ -40,6 +40,7 @@ const PostsList = () => {
       <div className="main">
         <Menu />
         <div className="container mx-auto mt-4">
+          <h2 className="title-list">Toutes les actualités</h2>
           <div className="row d-flex justify-content-center">
             {posts &&
               posts.map((post) => (
@@ -47,22 +48,35 @@ const PostsList = () => {
                   <div className="card card-list me-auto d-flex flex-column">
                     {post.media &&
                     Array.isArray(post.media) &&
-                    post.media.length > 0 ? (
+                    post.media.length > 0 &&
+                    post.media[0].media_file &&
+                    /\.(jpg|jpeg|png|gif|webp)$/i.test(
+                      post.media[0].media_file
+                    ) ? (
                       <img
                         src={`http://127.0.0.1:8000/storage/uploads/${post.media[0].media_file}`}
                         className="card-img-top"
                         alt={post.title_post}
                       />
                     ) : (
-                      <img src={bgCard} className="card-img-top" alt="" />
+                      <img
+                        src={bgCard}
+                        className="card-img-top"
+                        alt="Placeholder"
+                      />
                     )}
+
                     <div className="card-body card-body-list flex-grow-1">
                       <h4 className="card-title">{post.title_post}</h4>
-                      <h5 className="card-subtitle mb-2 border-bottom">
-                      <FaUserAlt className="icon-list" />
-                      {post.user.nick_name}
+                      <h5 className="card-subtitle my-2 border-bottom">
+                        <FaUserAlt className="icon-list" />
+                        {post.user.nick_name}
                       </h5>
-                      <p className="card-text">{post.description_post}</p>
+                      <p className="card-text my-2">
+                        {post.description_post.length > 100
+                          ? post.description_post.slice(0, 130) + "..."
+                          : post.description_post}
+                      </p>
                     </div>
                     <div className="card-footer card-footer-list">
                       <Button
