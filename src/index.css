@@ -15,7 +15,7 @@ code {
     monospace;
 }
 .navbar-custom {
-  background-color: #28a745; /* Ярко-зелёный */
+  background-color: #28a745;
   padding: 15px 0;
 }
 
@@ -25,7 +25,7 @@ code {
 }
 
 .navbar-custom .nav-link:hover {
-  color: #d4edda !important; /* Светлее при наведении */
+  color: #d4edda !important; 
 }
 
 .navbar-custom .navbar-brand img {
