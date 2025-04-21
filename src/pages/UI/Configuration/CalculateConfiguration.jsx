@@ -18,14 +18,13 @@ const CalculateConfiguration = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showResults, setShowResults] = useState(false);
 
-  // Расчетные переменные
+  
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalConsumption, setTotalConsumption] = useState(0);
 
   useEffect(() => {
     fetchComponents();
   }, []);
-
   useEffect(() => {
     if (searchTerm) {
       searchComponents(searchTerm);
@@ -129,7 +128,6 @@ const CalculateConfiguration = () => {
                       />
                     </InputGroup>
                   </Form.Group>
-
                   {showResults && filteredComponents.length > 0 && (
                     <ListGroup className="position-absolute w-100 mt-1 shadow-sm rounded z-index-1000">
                       {filteredComponents.map((comp) => (
@@ -150,7 +148,6 @@ const CalculateConfiguration = () => {
                 </div>
               </div>
             </div>
-
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title">Composants sélectionnés</h4>
@@ -201,7 +198,6 @@ const CalculateConfiguration = () => {
                         </ListGroup.Item>
                       ))}
                     </ListGroup>
-
                     <div className="summary-box p-3 bg-light rounded">
                       <h5>Récapitulatif</h5>
                       <div className="d-flex justify-content-between">

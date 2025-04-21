@@ -4,6 +4,7 @@ import Navbar from "../components/Menu";
 import "./../styles/css/navbar.css";
 import imageCarousel from "./../public/graph.jpg";
 import "./../styles/css/homePage.css";
+import "./../styles/css/buttonHome.css";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -18,7 +19,7 @@ const Home = () => {
       console.log(res.data);
       setPosts(res.data);
     } catch (error) {
-      console.error("Ошибка загрузки постов:", error);
+      console.error("Erreur d'enrigistrement des posts:", error);
     }
   };
 
@@ -26,7 +27,7 @@ const Home = () => {
     <div>
       <Navbar />
       <div className="mainHome">
-        <div className="row">
+        <div className="row g-0">
           <div
             id="carouselExampleControls"
             className="carousel slide"
@@ -34,12 +35,21 @@ const Home = () => {
           >
             <div className="carousel-inner">
               <div className="carousel-item active">
+                <div className="row">
+                <div className="col-md-6 rightSide">
+                  <h2 className="titleSlide">Combien d'énergie mon ordinateur consomme-t-il?</h2>
+                <div className="carousel-caption">
+                    <button className="glowing-btn btnCalc">Calculatrice en ligne</button>
+                  </div>
+                </div>
                 <img
                   src={imageCarousel}
-                  className="d-block carImg"
+                  className="d-block carImg col-md-6"
                   alt="configuration"
                 />
-                <p className="carousel-caption"></p>
+                 <h2 className="titleSlideImg">Combien d'énergie mon ordinateur consomme-t-il?</h2>
+                 <button className="glowing-btn btnCalcImg">Calculatrice en ligne</button>
+                </div>
               </div>
 
               {posts.map((post, index) => (
@@ -64,7 +74,6 @@ const Home = () => {
               ))}
             </div>
 
-            {/* Кнопки управления каруселью */}
             <button
               className="carousel-control-prev"
               type="button"

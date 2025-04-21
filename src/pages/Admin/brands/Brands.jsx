@@ -6,15 +6,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Brand = () => {
-  const [brands, setBrands] = useState([]);  // Изменил на plural "brands"
+  const [brands, setBrands] = useState([]);  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    displayBrands();  // Загружаем бренды при монтировании компонента
-  }, [currentPage]);  // Зависимость от currentPage
+    displayBrands(); 
+  }, [currentPage]);  
 
-  // Функция для загрузки брендов с пагинацией
   const displayBrands = async () => {
     await axios
       .get(`http://127.0.0.1:8000/api/brands?page=${currentPage}`)
