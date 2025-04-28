@@ -36,9 +36,10 @@ const EditCategory = () => {
 
     const formData = new FormData();
     formData.append("name_category", nameCategory);
+    formData.append("_method", 'PUT');
 
     try {
-      await axios.put(`http://127.0.0.1:8000/api/categories/${category}`, formData, {
+      await axios.post(`http://127.0.0.1:8000/api/categories/${category}`, formData, {
         headers: { "Content-Type": "application/json" },
       });
 

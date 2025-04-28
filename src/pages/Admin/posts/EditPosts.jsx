@@ -76,7 +76,7 @@ const EditPost = () => {
 
     if (filteredFiles.length < files.length) {
       alert(
-        "Некоторые файлы были отклонены, так как их формат не поддерживается."
+        "Certains fichiers ont été rejetés car leur format n'est pas pris en charge."
       );
     }
 
@@ -123,8 +123,9 @@ const EditPost = () => {
       formData.append("description_post", descriptionPost);
       formData.append("is_published", isPublished);
       formData.append("order_post", orderPost);
+      formData.append("_method", "PUT");
 
-      const res = await axios.put(
+      await axios.post(
         `http://127.0.0.1:8000/api/posts/${post}`,
         formData,
         {
@@ -302,7 +303,7 @@ const EditPost = () => {
   
                   {/* Save button */}
                   <Button variant="primary" className="mt-4 w-100" size="lg" type="submit">
-                    Enregistrer l'article
+                    Sauvgarder les changements
                   </Button>
                 </Form>
               </div>

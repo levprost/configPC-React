@@ -82,11 +82,14 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
+                <a href="">
                 <ButtonNav
                   text="Configurations"
                   variant="hsl(0, 0.00%, 100.00%)"
                   glow={true}
+                  href="/addconfiguration"
                 />
+                </a>
               </li>
               <li className="nav-item">
                 <ButtonNav
